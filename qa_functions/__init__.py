@@ -10,13 +10,13 @@ import re
 import os
 
 
-def initialize_retrievers(org_name: str, dataset_name: str, openai_key: str, deeplake_key: str):
+def initialize_retrievers(dataset_name: str, openai_key: str, deeplake_key: str):
     # Initialize LLM
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0,
                      openai_api_key=openai_key)
 
     # Connect to dataset
-    db = DeepLake(dataset_path=f"hub://{org_name}/{dataset_name}",
+    db = DeepLake(dataset_path=f"hub://gaurikapse/{dataset_name}",
                   read_only=True, embedding_function=OpenAIEmbeddings(openai_api_key=openai_key), token=deeplake_key)
 
     # Initialize retriever to retrieve documents based on similar questions
