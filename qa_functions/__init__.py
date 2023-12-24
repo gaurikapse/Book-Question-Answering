@@ -11,6 +11,13 @@ import os
 
 
 def initialize_retrievers(dataset_name: str, openai_key: str, deeplake_key: str):
+    """
+    Connect to GPT-3.5-Turbo and to dataset on DeepLake.
+    Returns a retriever, a QA chain with memory and a success message.
+    Inputs: 
+        dataset_name: name of the DeepLake dataset/book to query from
+        openai_key and deeplake_key: API keys
+    """
     # Initialize LLM
     llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0,
                      openai_api_key=openai_key)
@@ -43,6 +50,9 @@ def initialize_retrievers(dataset_name: str, openai_key: str, deeplake_key: str)
 
 
 def chat(query, mq_retriever, chain, chat_history):
+    """
+    Chat function. Returns an empty string (required to clear input box in the UI), the complete chat history and source metadata for the current answer.
+    """
     retrieved_documents = mq_retriever.get_relevant_documents(query=query)
     source = [doc.metadata for doc in retrieved_documents]
     result = chain.run(input_documents=retrieved_documents, question=query)
